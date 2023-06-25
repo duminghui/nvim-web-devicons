@@ -1,0 +1,3 @@
+[submodule "nvim-web-devicons"]
+	path = nvim-web-devicons
+	url = https://github.com/nvim-tree/nvim-web-devicons.git
