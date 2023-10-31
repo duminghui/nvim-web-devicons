@@ -112,6 +112,10 @@ gsed -i -r \
     -e 's|||g' \
     -e 's||󰆫|g' \
     -e 's||󰈔|g' \
+    -e 's||󰝚|g' \
+    -e 's||󰕧|g' \
+    -e 's||󰠅|g' \
+    -e 's||󰹳|g' \
     $lua_file
 
 parent_range(){

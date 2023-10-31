@@ -367,7 +367,7 @@ local icons_by_file_extension = {
     name = "R",
   },
   ["aac"] = {
-    icon = "",
+    icon = "󰝚",
     color = "#66D8EF",
     cterm_color = "45",
     name = "Aac",
@@ -391,7 +391,7 @@ local icons_by_file_extension = {
     name = "Awk",
   },
   ["azcli"] = {
-    icon = "",
+    icon = "󰠅",
     color = "#0078d4",
     cterm_color = "32",
     name = "AzureCli",
@@ -738,7 +738,7 @@ local icons_by_file_extension = {
     name = "Fortran",
   },
   ["flac"] = {
-    icon = "",
+    icon = "󰝚",
     color = "#66D8EF",
     cterm_color = "45",
     name = "Flac",
@@ -906,7 +906,7 @@ local icons_by_file_extension = {
     name = "Huff",
   },
   ["hurl"] = {
-    icon = "",
+    icon = "󰹳",
     color = "#ff0288",
     cterm_color = "198",
     name = "Hurl",
@@ -1068,13 +1068,13 @@ local icons_by_file_extension = {
     name = "Luau",
   },
   ["m4a"] = {
-    icon = "",
+    icon = "󰝚",
     color = "#66D8EF",
     cterm_color = "45",
     name = "M4A",
   },
   ["m4v"] = {
-    icon = "",
+    icon = "󰕧",
     color = "#FD971F",
     cterm_color = "208",
     name = "M4V",
@@ -1128,7 +1128,7 @@ local icons_by_file_extension = {
     name = "Makefile",
   },
   ["mkv"] = {
-    icon = "",
+    icon = "󰕧",
     color = "#FD971F",
     cterm_color = "208",
     name = "Mkv",
@@ -1152,19 +1152,19 @@ local icons_by_file_extension = {
     name = "Motoko",
   },
   ["mov"] = {
-    icon = "",
+    icon = "󰕧",
     color = "#FD971F",
     cterm_color = "208",
     name = "MOV",
   },
   ["mp3"] = {
-    icon = "",
+    icon = "󰝚",
     color = "#66D8EF",
     cterm_color = "45",
     name = "Mp3",
   },
   ["mp4"] = {
-    icon = "",
+    icon = "󰕧",
     color = "#FD971F",
     cterm_color = "208",
     name = "Mp4",
@@ -1200,7 +1200,7 @@ local icons_by_file_extension = {
     name = "Nswag",
   },
   ["ogg"] = {
-    icon = "",
+    icon = "󰝚",
     color = "#66D8EF",
     cterm_color = "45",
     name = "Ogg",
@@ -1751,13 +1751,13 @@ local icons_by_file_extension = {
     name = "Vue",
   },
   ["wav"] = {
-    icon = "",
+    icon = "󰝚",
     color = "#66D8EF",
     cterm_color = "45",
     name = "Wav",
   },
   ["webm"] = {
-    icon = "",
+    icon = "󰕧",
     color = "#FD971F",
     cterm_color = "208",
     name = "Webm",
