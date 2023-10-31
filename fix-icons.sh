@@ -2,7 +2,7 @@
 
 set -e
 
-lua_file="lua/nvim-web-devicons.lua"
+lua_file="lua/nvim-web-devicons/icons-default.lua"
 
 gsed -i -r \
     -e 's||󰒓|g' \
