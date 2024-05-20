@@ -1,5 +1,46 @@
--- When adding new icons, remember to add an entry to the `filetypes` table, if applicable.
-local icons, icons_by_filename, icons_by_file_extension
+local M = {}
+
+-- NOTE: When adding new icons, remember to add an entry to the `filetypes` table, if applicable.
+local icons, icons_by_filename, icons_by_file_extension, icons_by_operating_system
+local icons_by_desktop_environment, icons_by_window_manager
+
+local default_icon = {
+  icon = "",
+  color = "#6d8086",
+  cterm_color = "66",
+  name = "Default",
+}
+
+function M.get_icons()
+  return icons
+end
+
+function M.get_icons_by_filename()
+  return icons_by_filename
+end
+
+function M.get_icons_by_extension()
+  return icons_by_file_extension
+end
+
+function M.get_icons_by_operating_system()
+  return icons_by_operating_system
+end
+
+function M.get_icons_by_desktop_environment()
+  return icons_by_desktop_environment
+end
+
+function M.get_icons_by_window_manager()
+  return icons_by_window_manager
+end
+
+local global_opts = {
+  override = {},
+  strict = false,
+  default = false,
+  color_icons = true,
+}
 
 -- Set the current icons tables, depending on the 'background' option.
 local function refresh_icons()
@@ -12,20 +53,38 @@ local function refresh_icons()
 
   icons_by_filename = theme.icons_by_filename
   icons_by_file_extension = theme.icons_by_file_extension
-  icons = vim.tbl_extend("keep", {}, icons_by_filename, icons_by_file_extension)
+  icons_by_operating_system = theme.icons_by_operating_system
+  icons_by_desktop_environment = theme.icons_by_desktop_environment
+  icons_by_window_manager = theme.icons_by_window_manager
+  icons = vim.tbl_extend(
+    "keep",
+    {},
+    icons_by_filename,
+    icons_by_file_extension,
+    icons_by_operating_system,
+    icons_by_desktop_environment,
+    icons_by_window_manager
+  )
+  icons = vim.tbl_extend("force", icons, global_opts.override)
+  icons[1] = default_icon
 end
 
 -- Map of filetypes -> icon names
 local filetypes = {
   ["avif"] = "avif",
+  ["bash"] = "bash",
+  ["bib"] = "bib",
+  ["bicep"] = "bicep",
+  ["bicepparam"] = "bicepparam",
   ["bzl"] = "bzl",
   ["brewfile"] = "brewfile",
+  ["blueprint"] = "blp",
+  ["checkhealth"] = "checkhealth",
   ["commit"] = "commit_editmsg",
   ["copying"] = "copying",
   ["gemfile"] = "gemfile$",
   ["lesser"] = "copying.lesser",
   ["vagrantfile"] = "vagrantfile$",
-  ["aac"] = "aac",
   ["awk"] = "awk",
   ["bmp"] = "bmp",
   ["c"] = "c",
@@ -43,6 +102,7 @@ local filetypes = {
   ["cson"] = "cson",
   ["css"] = "css",
   ["csv"] = "csv",
+  ["cuda"] = "cu",
   ["d"] = "d",
   ["dart"] = "dart",
   ["desktop"] = "desktop",
@@ -52,6 +112,7 @@ local filetypes = {
   ["dockerfile"] = "dockerfile",
   ["dosbatch"] = "bat",
   ["dosini"] = "ini",
+  ["dot"] = "dot",
   ["drools"] = "drl",
   ["dropbox"] = "dropbox",
   ["dump"] = "dump",
@@ -64,7 +125,6 @@ local filetypes = {
   ["eruby"] = "erb",
   ["fennel"] = "fnl",
   ["fish"] = "fish",
-  ["flac"] = "flac",
   ["forth"] = "fs",
   ["fortran"] = "f90",
   ["fsharp"] = "f#",
@@ -82,17 +142,23 @@ local filetypes = {
   ["go"] = "go",
   ["godot"] = "godot",
   ["graphql"] = "graphql",
+  ["groovy"] = "groovy",
   ["gql"] = "gql",
   ["gruntfile"] = "gruntfile",
+  ["gtkrc"] = "gtkrc",
   ["gulpfile"] = "gulpfile",
   ["haml"] = "haml",
+  ["haxe"] = "hx",
   ["haskell"] = "hs",
   ["hbs"] = "hbs",
   ["heex"] = "heex",
+  ["hex"] = "hex",
   ["html"] = "html",
   ["ico"] = "ico",
   ["idlang"] = "pro",
+  ["ino"] = "ino",
   ["import"] = "import",
+  ["ipynb"] = "ipynb",
   ["java"] = "java",
   ["javascript"] = "js",
   ["javascript.jsx"] = "jsx",
@@ -117,21 +183,17 @@ local filetypes = {
   ["make"] = "makefile",
   ["markdown"] = "markdown",
   ["material"] = "material",
-  ["m4a"] = "m4a",
-  ["m4v"] = "m4v",
   ["mdx"] = "mdx",
   ["mint"] = "mint",
-  ["mkv"] = "mkv",
   ["motoko"] = "mo",
-  ["mov"] = "mov",
-  ["mp3"] = "mp3",
-  ["mp4"] = "mp4",
   ["mustache"] = "mustache",
   ["nim"] = "nim",
   ["nix"] = "nix",
+  ["nu"] = "nu",
   ["node"] = "node_modules",
+  ["obj"] = "obj",
   ["ocaml"] = "ml",
-  ["ogg"] = "ogg",
+  ["openscad"] = "scad",
   ["opus"] = "opus",
   ["otf"] = "otf",
   ["pck"] = "pck",
@@ -140,6 +202,7 @@ local filetypes = {
   ["php"] = "php",
   ["plaintex"] = "tex",
   ["png"] = "png",
+  ["po"] = "po",
   ["postscr"] = "ai",
   ["ppt"] = "ppt",
   ["prisma"] = "prisma",
@@ -177,6 +240,8 @@ local filetypes = {
   ["sql"] = "sql",
   ["sqlite"] = "sqlite",
   ["sqlite3"] = "sqlite3",
+  ["srt"] = "srt",
+  ["ssa"] = "ssa",
   ["styl"] = "styl",
   ["sublime"] = "sublime",
   ["suo"] = "suo",
@@ -186,6 +251,7 @@ local filetypes = {
   ["systemverilog"] = "sv",
   ["tads"] = "t",
   ["tcl"] = "tcl",
+  ["templ"] = "templ",
   ["terminal"] = "terminal",
   ["tex"] = "tex",
   ["toml"] = "toml",
@@ -201,7 +267,6 @@ local filetypes = {
   ["vim"] = "vim",
   ["vue"] = "vue",
   ["wasm"] = "wasm",
-  ["wav"] = "wav",
   ["webm"] = "webm",
   ["webp"] = "webp",
   ["webpack"] = "webpack",
@@ -212,20 +277,6 @@ local filetypes = {
   ["yaml"] = "yaml",
   ["zig"] = "zig",
   ["zsh"] = "zsh",
-}
-
-local default_icon = {
-  icon = "",
-  color = "#6d8086",
-  cterm_color = "66",
-  name = "Default",
-}
-
-local global_opts = {
-  override = {},
-  strict = false,
-  default = false,
-  color_icons = true,
 }
 
 local function get_highlight_name(data)
@@ -261,7 +312,7 @@ local function highlight_exists(group)
   return ok and not (hl or {})[true]
 end
 
-local function set_up_highlights(allow_override)
+function M.set_up_highlights(allow_override)
   if not global_opts.color_icons then
     set_up_highlight(default_icon)
     return
@@ -295,8 +346,12 @@ end
 
 local loaded = false
 
+function M.has_loaded()
+  return loaded
+end
+
 local if_nil = vim.F.if_nil
-local function setup(opts)
+function M.setup(opts)
   if loaded then
     return
   end
@@ -321,9 +376,30 @@ local function setup(opts)
 
   local user_filename_icons = user_icons.override_by_filename
   local user_file_ext_icons = user_icons.override_by_extension
+  local user_operating_system_icons = user_icons.override_by_operating_system
+  local user_desktop_environment_icons = user_icons.override_by_desktop_environment
+  local user_window_manager_icons = user_icons.override_by_window_manager
 
-  icons =
-    vim.tbl_extend("force", icons, user_icons.override or {}, user_filename_icons or {}, user_file_ext_icons or {})
+  icons = vim.tbl_extend(
+    "force",
+    icons,
+    user_icons.override or {},
+    user_filename_icons or {},
+    user_file_ext_icons or {},
+    user_operating_system_icons or {},
+    user_desktop_environment_icons or {},
+    user_window_manager_icons or {}
+  )
+  global_opts.override = vim.tbl_extend(
+    "force",
+    global_opts.override,
+    user_icons.override or {},
+    user_filename_icons or {},
+    user_file_ext_icons or {},
+    user_operating_system_icons or {},
+    user_desktop_environment_icons or {},
+    user_window_manager_icons or {}
+  )
 
   if user_filename_icons then
     icons_by_filename = vim.tbl_extend("force", icons_by_filename, user_filename_icons)
@@ -331,19 +407,43 @@ local function setup(opts)
   if user_file_ext_icons then
     icons_by_file_extension = vim.tbl_extend("force", icons_by_file_extension, user_file_ext_icons)
   end
+  if user_operating_system_icons then
+    icons_by_operating_system = vim.tbl_extend("force", icons_by_operating_system, user_operating_system_icons)
+  end
+  if user_desktop_environment_icons then
+    icons_by_desktop_environment = vim.tbl_extend("force", icons_by_desktop_environment, user_desktop_environment_icons)
+  end
+  if user_window_manager_icons then
+    icons_by_window_manager = vim.tbl_extend("force", icons_by_window_manager, user_window_manager_icons)
+  end
 
-  table.insert(icons, default_icon)
+  icons[1] = default_icon
 
-  set_up_highlights()
+  M.set_up_highlights()
 
   vim.api.nvim_create_autocmd("ColorScheme", {
     desc = "Re-apply icon colors after changing colorschemes",
     group = vim.api.nvim_create_augroup("NvimWebDevicons", { clear = true }),
-    callback = set_up_highlights,
+    callback = M.set_up_highlights,
+  })
+
+  -- highlight test command
+  vim.api.nvim_create_user_command("NvimWebDeviconsHiTest", function()
+    require "nvim-web-devicons.hi-test"(
+      default_icon,
+      global_opts.override,
+      icons_by_filename,
+      icons_by_file_extension,
+      icons_by_operating_system,
+      icons_by_desktop_environment,
+      icons_by_window_manager
+    )
+  end, {
+    desc = "nvim-web-devicons: highlight test",
   })
 end
 
-local function get_default_icon()
+function M.get_default_icon()
   return default_icon
 end
 
@@ -373,13 +473,13 @@ local function get_icon_by_extension(name, ext, opts)
   return iterate_multi_dotted_extension(name, icon_table)
 end
 
-local function get_icon(name, ext, opts)
+local function get_icon_data(name, ext, opts)
   if type(name) == "string" then
     name = name:lower()
   end
 
   if not loaded then
-    setup()
+    M.setup()
   end
 
   local has_default = if_nil(opts and opts.default, global_opts.default)
@@ -390,36 +490,31 @@ local function get_icon(name, ext, opts)
   else
     icon_data = icons[name] or get_icon_by_extension(name, ext, opts) or (has_default and default_icon)
   end
+
+  return icon_data
+end
+
+function M.get_icon(name, ext, opts)
+  local icon_data = get_icon_data(name, ext, opts)
 
   if icon_data then
     return icon_data.icon, get_highlight_name(icon_data)
   end
 end
 
-local function get_icon_name_by_filetype(ft)
+function M.get_icon_name_by_filetype(ft)
   return filetypes[ft]
 end
 
-local function get_icon_by_filetype(ft, opts)
-  local name = get_icon_name_by_filetype(ft)
+function M.get_icon_by_filetype(ft, opts)
+  local name = M.get_icon_name_by_filetype(ft)
   opts = opts or {}
   opts.strict = false
-  return get_icon(name or "", nil, opts)
+  return M.get_icon(name or "", nil, opts)
 end
 
-local function get_icon_colors(name, ext, opts)
-  if not loaded then
-    setup()
-  end
-
-  local has_default = if_nil(opts and opts.default, global_opts.default)
-  local is_strict = if_nil(opts and opts.strict, global_opts.strict)
-  local icon_data
-  if is_strict then
-    icon_data = icons_by_filename[name] or get_icon_by_extension(name, ext, opts) or (has_default and default_icon)
-  else
-    icon_data = icons[name] or get_icon_by_extension(name, ext, opts) or (has_default and default_icon)
-  end
+function M.get_icon_colors(name, ext, opts)
+  local icon_data = get_icon_data(name, ext, opts)
 
   if icon_data then
     local color = icon_data.color
@@ -432,34 +527,34 @@ local function get_icon_colors(name, ext, opts)
   end
 end
 
-local function get_icon_colors_by_filetype(ft, opts)
-  local name = get_icon_name_by_filetype(ft)
-  return get_icon_colors(name or "", nil, opts)
+function M.get_icon_colors_by_filetype(ft, opts)
+  local name = M.get_icon_name_by_filetype(ft)
+  return M.get_icon_colors(name or "", nil, opts)
 end
 
-local function get_icon_color(name, ext, opts)
-  local data = { get_icon_colors(name, ext, opts) }
+function M.get_icon_color(name, ext, opts)
+  local data = { M.get_icon_colors(name, ext, opts) }
   return data[1], data[2]
 end
 
-local function get_icon_color_by_filetype(ft, opts)
-  local name = get_icon_name_by_filetype(ft)
+function M.get_icon_color_by_filetype(ft, opts)
+  local name = M.get_icon_name_by_filetype(ft)
   opts = opts or {}
   opts.strict = false
-  return get_icon_color(name or "", nil, opts)
+  return M.get_icon_color(name or "", nil, opts)
 end
 
-local function get_icon_cterm_color(name, ext, opts)
-  local data = { get_icon_colors(name, ext, opts) }
+function M.get_icon_cterm_color(name, ext, opts)
+  local data = { M.get_icon_colors(name, ext, opts) }
   return data[1], data[3]
 end
 
-local function get_icon_cterm_color_by_filetype(ft, opts)
-  local name = get_icon_name_by_filetype(ft)
-  return get_icon_cterm_color(name or "", nil, opts)
+function M.get_icon_cterm_color_by_filetype(ft, opts)
+  local name = M.get_icon_name_by_filetype(ft)
+  return M.get_icon_cterm_color(name or "", nil, opts)
 end
 
-local function set_icon(user_icons)
+function M.set_icon(user_icons)
   icons = vim.tbl_extend("force", icons, user_icons or {})
   if not global_opts.color_icons then
     return
@@ -470,7 +565,11 @@ local function set_icon(user_icons)
   end
 end
 
-local function set_default_icon(icon, color, cterm_color)
+function M.set_icon_by_filetype(user_filetypes)
+  filetypes = vim.tbl_extend("force", filetypes, user_filetypes or {})
+end
+
+function M.set_default_icon(icon, color, cterm_color)
   default_icon.icon = icon
   default_icon.color = color
   default_icon.cterm_color = cterm_color
@@ -480,37 +579,15 @@ end
 -- Load the icons already, the loaded tables depend on the 'background' setting.
 refresh_icons()
 
-local function refresh()
+function M.refresh()
   refresh_icons()
-  set_up_highlights(true)
+  M.set_up_highlights(true)
 end
 
 -- Change icon set on background change
 vim.api.nvim_create_autocmd("OptionSet", {
   pattern = "background",
-  callback = refresh,
+  callback = M.refresh,
 })
 
-return {
-  get_icon = get_icon,
-  get_icon_colors = get_icon_colors,
-  get_icon_color = get_icon_color,
-  get_icon_cterm_color = get_icon_cterm_color,
-  get_icon_name_by_filetype = get_icon_name_by_filetype,
-  get_icon_by_filetype = get_icon_by_filetype,
-  get_icon_colors_by_filetype = get_icon_colors_by_filetype,
-  get_icon_color_by_filetype = get_icon_color_by_filetype,
-  get_icon_cterm_color_by_filetype = get_icon_cterm_color_by_filetype,
-  set_icon = set_icon,
-  set_default_icon = set_default_icon,
-  get_default_icon = get_default_icon,
-  setup = setup,
-  has_loaded = function()
-    return loaded
-  end,
-  get_icons = function()
-    return icons
-  end,
-  set_up_highlights = set_up_highlights,
-  refresh = refresh,
-}
+return M

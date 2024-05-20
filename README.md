@@ -26,7 +26,13 @@ or with [packer.nvim](https://github.com/wbthomason/packer.nvim)
 use 'nvim-tree/nvim-web-devicons'
 ```
 
+[![LuaRocks](https://img.shields.io/luarocks/v/nvim-tree/nvim-web-devicons?logo=lua&color=purple)](https://luarocks.org/modules/nvim-tree/nvim-web-devicons)
+
 ## Usage
+
+### Viewing
+
+Run `:NvimWebDeviconsHiTest` to see all icons and their highlighting.
 
 ### Variants
 
@@ -87,6 +93,16 @@ require'nvim-web-devicons'.setup {
     name = "Log"
   }
  };
+ -- same as `override` but specifically for operating system
+ -- takes effect when `strict` is true
+ override_by_operating_system = {
+  ["apple"] = {
+    icon = "",
+    color = "#A2AAAD",
+    cterm_color = "248",
+    name = "Apple",
+  },
+ };
 }
 ```
 
@@ -138,6 +154,15 @@ require'nvim-web-devicons'.get_icons()
 
 This can be useful for debugging purposes or for creating custom highlights for each icon.
 
+Mapped categories can be fetched via:
+
+```lua
+require'nvim-web-devicons'.get_icons_by_filename()
+require'nvim-web-devicons'.get_icons_by_extension()
+require'nvim-web-devicons'.get_icons_by_operating_system()
+require'nvim-web-devicons'.get_icons_by_desktop_environment()
+require'nvim-web-devicons'.get_icons_by_window_manager()
+```
 
 ### Set an icon
 
@@ -160,7 +185,7 @@ You can override the default icon with the `set_default_icon(icon, color, cterm_
 require("nvim-web-devicons").set_default_icon('', '#6d8086', 65)
 ```
 
-### Getting icons by filetype
+### Getting and setting icons by filetype
 
 You can get the icon and colors associated with a filetype using the `by_filetype` functions:
 
@@ -171,9 +196,39 @@ require("nvim-web-devicons").get_icon_color_by_filetype(filetype, opts)
 require("nvim-web-devicons").get_icon_cterm_color_by_filetype(filetype, opts)
 ```
 
+or set the icon to use for a filetype with:
+
+```lua
+require("nvim-web-devicons").set_icon_by_filetype { cpp = "c", pandoc = "md", }
+```
+
 These functions are the same as their counterparts without the `_by_filetype` suffix, but they take a filetype instead of a name/extension.
 
 You can also use `get_icon_name_by_filetype(filetype)` to get the icon name associated with the filetype.
+
+## Known Issues
+
+### My `setup` Overrides Are Not Applied
+
+*Cause:* A plugin may be calling nvim-web-devicons `setup` before you do. Your `setup` call will be ignored.
+
+*Workaround:* Call nvim-web-devicons `setup` before the plugin's own `setup`.
+
+### Windows and WSL not rendering icons properly on some terminals
+
+On Windows and WSL, it is possible that the icons are not rendered properly when
+using a terminal that relies on Windows' default system libraries. An example
+of this is Alacritty ([#271](https://github.com/nvim-tree/nvim-web-devicons/issues/271#issuecomment-2081280928)).
+Other terminals (e.g. Windows Terminal, and WezTerm) do no have this issue, as
+they ship newer versions of these libraries. More precisely, they use newer
+versions of `conpty.dll` and `OpenConsole.exe`. So, as a workaround to the
+rendering issue, you need to make your terminal use these newer files. Whether
+this is possible depends on the terminal you are using. Please refer to the
+terminal's documentation for this.
+
+In the specific case of Alacritty, you need to place up-to-date `conpty.dll` and
+`OpenConsole.exe` files in your `PATH`. Microsoft does not provide these files
+directly, but you can get them from other terminal emulators that ship them.
 
 ## Contributing
 

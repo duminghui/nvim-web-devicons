@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -eu
 
 lua_file="lua/nvim-web-devicons/icons-default.lua"
 
@@ -116,6 +116,27 @@ gsed -i -r \
     -e 's||󰕧|g' \
     -e 's||󰠅|g' \
     -e 's||󰹳|g' \
+    -e 's||󰕮|g' \
+    -e 's||󰗄|g' \
+    -e 's||󰀲|g' \
+    -e 's||󰀵|g' \
+    -e 's||󰫐|g' \
+    -e 's||󰆼|g' \
+    -e 's||󰇚|g' \
+    -e 's||󱉟|g' \
+    -e 's||󰂺|g' \
+    -e 's||󰸗|g' \
+    -e 's||󰙎|g' \
+    -e 's||󰌽|g' \
+    -e 's||󰌾|g' \
+    -e 's||󱘗|g' \
+    -e 's||󰡪|g' \
+    -e 's||󰅴|g' \
+    -e 's||󰖯|g' \
+    -e 's||󱆃|g' \
+    -e 's||󰀵|g' \
+    -e 's||󰖳|g' \
+    -e 's||󰌽|g' \
     $lua_file
 
 parent_range(){

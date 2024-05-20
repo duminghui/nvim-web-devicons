@@ -1,6 +1,8 @@
 #!/bin/sh
 
-set -e
+set -exu
+
+git submodule update --remote
 
 cp nvim-web-devicons/.editorconfig .
 cp nvim-web-devicons/.gitignore .
