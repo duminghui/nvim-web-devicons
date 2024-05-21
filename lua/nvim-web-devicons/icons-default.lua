@@ -2931,7 +2931,7 @@ local icons_by_file_extension = {
     name = "Tcl",
   },
   ["templ"] = {
-    icon = "󰅴",
+    icon = "󰗀",
     color = "#dbbd30",
     cterm_color = "178",
     name = "Templ",
